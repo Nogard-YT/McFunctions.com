@@ -92,7 +92,7 @@ function Tools() {
 			link="/customized/"
 			desc="Create data packs to customize your world" />
 		<ToolCard title="Report Inspector" icon="report"
-			link="https://mcfunctions.com/report/"
+			link="https://misode.github.io/report/"
 			desc="Analyse your performance reports" />
 		<ToolCard title="Minecraft Sounds" icon="sounds"
 			link="/sounds/"
@@ -101,7 +101,7 @@ function Tools() {
 			link="/transformation/"
 			desc="Visualize transformations for display entities" />
 		<ToolCard title="Template Placer"
-			link="https://mcfunctions.com/template-placer/"
+			link="https://misode.github.io/template-placer/"
 			desc="Automatically place all the structure pieces in your world" />
 	</ToolGroup>
 }
