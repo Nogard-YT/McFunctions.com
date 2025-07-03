@@ -49,7 +49,7 @@ export function CustomizedPanel({ tab }: Props) {
 				})
 			})
 			const pack_format = config.versions.find(v => v.id === version)!.pack_format
-			const packMcmetaText = stringifySource(JSON.stringify({ pack: { pack_format, description: 'Customized world from misode.github.io' } }, null, 2), 'json')
+			const packMcmetaText = stringifySource(JSON.stringify({ pack: { pack_format, description: 'Customized world from McFunctions.com' } }, null, 2), 'json')
 			entries.push(['pack.mcmeta', new TextEncoder().encode(packMcmetaText)])
 			const url = await writeZip(entries)
 			download.current.setAttribute('href', url)
