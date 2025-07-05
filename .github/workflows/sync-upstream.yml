@@ -29,7 +29,7 @@ jobs:
 
       - name: Create or update pull request to master
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           # Check if there are any differences between branches
           if git diff --quiet origin/master misode-upstream; then
