@@ -24,20 +24,20 @@ jobs:
           git checkout -B misode-upstream upstream/master
           git push origin misode-upstream --force
 
-      - name: Create or update pull request to main
+      - name: Create or update pull request to master
         id: cpr
         uses: repo-sync/pull-request@v2
         with:
           source_branch: misode-upstream
-          destination_branch: main
+          destination_branch: master
           pr_title: "🔄 Sync with misode/misode.github.io"
-          pr_body: "This PR merges upstream changes from `misode.github.io` into your `main` branch."
+          pr_body: "This PR merges upstream changes from `misode.github.io` into your `master` branch."
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Auto-merge PR if no conflicts
-        if: steps.cpr.outputs.has-conflicts == 'false'
-        uses: peter-evans/enable-pull-request-automerge@v2
+        if: steps.cpr.outputs.has_conflicts == 'false'
+        uses: peter-evans/enable-pull-request-automerge@v3
         with:
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
