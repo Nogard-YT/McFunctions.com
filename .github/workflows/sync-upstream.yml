@@ -28,19 +28,28 @@ jobs:
           git push origin misode-upstream --force
 
       - name: Create or update pull request to master
-        id: cpr
-        uses: repo-sync/pull-request@v2
-        with:
-          source_branch: misode-upstream
-          destination_branch: master
-          pr_title: "🔄 Sync with misode/misode.github.io"
-          pr_body: "This PR merges upstream changes from `misode.github.io` into your `master` branch."
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Auto-merge PR if no conflicts
-        if: steps.cpr.outputs.has_conflicts == 'false'
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: squash
-          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if there are any differences between branches
+          if git diff --quiet origin/master misode-upstream; then
+            echo "No changes to sync"
+            exit 0
+          fi
+          
+          # Check if PR already exists
+          existing_pr=$(gh pr list --head misode-upstream --base master --json number --jq '.[0].number' || echo "")
+          
+          if [ -n "$existing_pr" ]; then
+            echo "Updating existing PR #$existing_pr"
+            gh pr edit $existing_pr --title "🔄 Sync with misode/misode.github.io" --body "This PR merges upstream changes from \`misode.github.io\` into your \`master\` branch."
+          else
+            echo "Creating new PR"
+            gh pr create --head misode-upstream --base master --title "🔄 Sync with misode/misode.github.io" --body "This PR merges upstream changes from \`misode.github.io\` into your \`master\` branch."
+          fi
+          
+          # Try to auto-merge if no conflicts
+          pr_number=$(gh pr list --head misode-upstream --base master --json number --jq '.[0].number')
+          if [ -n "$pr_number" ]; then
+            gh pr merge $pr_number --squash --auto || echo "Auto-merge failed, manual intervention needed"
+          fi
