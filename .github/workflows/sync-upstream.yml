@@ -24,6 +24,15 @@ jobs:
           git config --global user.name "Upstream Sync Bot"
           git remote add upstream https://github.com/misode/misode.github.io.git
           git fetch upstream
+          git fetch origin
+          
+          # Check if there are any new commits in upstream
+          if git merge-base --is-ancestor upstream/master origin/master; then
+            echo "No new commits in upstream, repository is up to date"
+            exit 0
+          fi
+          
+          # Create and push tracking branch
           git checkout -B misode-upstream upstream/master
           git push origin misode-upstream --force
 
@@ -31,21 +40,30 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          # Check if there are any differences between branches
-          if git diff --quiet origin/master misode-upstream; then
-            echo "No changes to sync"
+          # Verify branches exist and have differences
+          if ! git rev-parse --verify origin/misode-upstream >/dev/null 2>&1; then
+            echo "Error: misode-upstream branch not found"
+            exit 1
+          fi
+          
+          # Check if there are commits between branches
+          commit_count=$(git rev-list --count origin/master..origin/misode-upstream)
+          if [ "$commit_count" -eq 0 ]; then
+            echo "No commits between master and misode-upstream"
             exit 0
           fi
           
+          echo "Found $commit_count commits to sync"
+          
           # Check if PR already exists
-          existing_pr=$(gh pr list --head misode-upstream --base master --json number --jq '.[0].number' || echo "")
+          existing_pr=$(gh pr list --head misode-upstream --base master --json number --jq '.[0].number' 2>/dev/null || echo "")
           
           if [ -n "$existing_pr" ]; then
             echo "Updating existing PR #$existing_pr"
-            gh pr edit $existing_pr --title "🔄 Sync with misode/misode.github.io" --body "This PR merges upstream changes from \`misode.github.io\` into your \`master\` branch."
+            gh pr edit $existing_pr --title "🔄 Sync with misode/misode.github.io" --body "This PR merges upstream changes from \`misode.github.io\` into your \`master\` branch. Found $commit_count new commits."
           else
             echo "Creating new PR"
-            gh pr create --head misode-upstream --base master --title "🔄 Sync with misode/misode.github.io" --body "This PR merges upstream changes from \`misode.github.io\` into your \`master\` branch."
+            gh pr create --head misode-upstream --base master --title "🔄 Sync with misode/misode.github.io" --body "This PR merges upstream changes from \`misode.github.io\` into your \`master\` branch. Found $commit_count new commits."
           fi
           
           # Try to auto-merge if no conflicts
