@@ -1,73 +1,34 @@
-name: 🔄 Sync with misode.github.io
+name: 🔄 Sync fork with upstream
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # Daily at 3 AM UTC
-  workflow_dispatch:     # Allow manual trigger from the GitHub UI
+    - cron: "0 3 * * *" # daily at 3 AM UTC
+  workflow_dispatch: # manual trigger
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
-      - name: Checkout your fork
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Fetch upstream and push to tracking branch
+      - name: Configure git
         run: |
-          git config --global user.email "sync-bot@nogard.dev"
-          git config --global user.name "Upstream Sync Bot"
-          git remote add upstream https://github.com/misode/misode.github.io.git
-          git fetch upstream
-          git fetch origin
-          
-          # Check if there are any new commits in upstream
-          if git merge-base --is-ancestor upstream/master origin/master; then
-            echo "No new commits in upstream, repository is up to date"
-            exit 0
-          fi
-          
-          # Create and push tracking branch
-          git checkout -B misode-upstream upstream/master
-          git push origin misode-upstream --force
+          git config user.name "Nogard-YT"
+          git config user.email "nogmcpe@gmail.com"
 
-      - name: Create or update pull request to master
-        env:
-          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+      - name: Add upstream and fetch
         run: |
-          # Verify branches exist and have differences
-          if ! git rev-parse --verify origin/misode-upstream >/dev/null 2>&1; then
-            echo "Error: misode-upstream branch not found"
-            exit 1
-          fi
-          
-          # Check if there are commits between branches
-          commit_count=$(git rev-list --count origin/master..origin/misode-upstream)
-          if [ "$commit_count" -eq 0 ]; then
-            echo "No commits between master and misode-upstream"
-            exit 0
-          fi
-          
-          echo "Found $commit_count commits to sync"
-          
-          # Check if PR already exists
-          existing_pr=$(gh pr list --head misode-upstream --base master --json number --jq '.[0].number' 2>/dev/null || echo "")
-          
-          if [ -n "$existing_pr" ]; then
-            echo "Updating existing PR #$existing_pr"
-            gh pr edit $existing_pr --title "🔄 Sync with misode/misode.github.io" --body "This PR merges upstream changes from \`misode.github.io\` into your \`master\` branch. Found $commit_count new commits."
-          else
-            echo "Creating new PR"
-            gh pr create --head misode-upstream --base master --title "🔄 Sync with misode/misode.github.io" --body "This PR merges upstream changes from \`misode.github.io\` into your \`master\` branch. Found $commit_count new commits."
-          fi
-          
-          # Try to auto-merge if no conflicts
-          pr_number=$(gh pr list --head misode-upstream --base master --json number --jq '.[0].number')
-          if [ -n "$pr_number" ]; then
-            gh pr merge $pr_number --squash --auto || echo "Auto-merge failed, manual intervention needed"
-          fi
+          git remote add upstream https://github.com/misode/misode.github.io.git || true
+          git fetch upstream
+
+      - name: Merge upstream/master into fork/master
+        run: |
+          git checkout master
+          git merge upstream/master --no-edit || true
+          git push origin master
