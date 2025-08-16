@@ -3,7 +3,7 @@ name: 🔄 Sync fork with upstream
 on:
   schedule:
     - cron: "0 3 * * *" # daily at 3 AM UTC
-  workflow_dispatch: # manual trigger
+  workflow_dispatch:     # manual trigger
 
 jobs:
   sync:
@@ -12,12 +12,12 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout
+      - name: Checkout fork
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Configure git
+      - name: Configure Git
         run: |
           git config user.name "Nogard-YT"
           git config user.email "nogmcpe@gmail.com"
@@ -30,5 +30,11 @@ jobs:
       - name: Merge upstream/master into fork/master
         run: |
           git checkout master
-          git merge upstream/master --no-edit || true
-          git push origin master
+          set -e
+          if git merge upstream/master --no-edit; then
+            echo "✅ Merge successful, pushing changes"
+            git push origin master
+          else
+            echo "⚠️ Merge conflict, manual resolution required"
+            exit 1
+          fi
