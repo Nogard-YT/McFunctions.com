@@ -34,13 +34,17 @@ const sitemap = new SitemapStream({ hostname: SITE_URL })
 links.forEach(link => sitemap.write(link))
 sitemap.end()
 
-streamToPromise(sitemap).then(buffer => {
-  // Pretty-print the XML
-  const xml = buffer.toString()
-    .replace(/(<\/url>)/g, '$1\n')
-    .replace(/(<urlset[^>]*>)/g, '$1\n')
-    .replace(/(<\/urlset>)/g, '\n$1\n')
-    .replace(/(<url>)/g, '  $1')
+streamToPromise(sitemap).then(() => {
+  // Generate properly structured sitemap.xml
+  const urlEntries = links.map(link =>
+    `  <url>\n    <loc>${SITE_URL}${link.url}</loc>\n    <changefreq>${link.changefreq}</changefreq>\n    <priority>${link.priority}</priority>\n  </url>`
+  ).join('\n')
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urlEntries}
+</urlset>
+`
   writeFileSync('./dist/sitemap.xml', xml)
 
   // Generate sitemap.txt (plain text format)
