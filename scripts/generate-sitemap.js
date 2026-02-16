@@ -30,16 +30,22 @@ const links = [
 }))
 
 const sitemap = new SitemapStream({ hostname: SITE_URL })
-const writeStream = createWriteStream('./dist/sitemap.xml')
 
-sitemap.pipe(writeStream)
 links.forEach(link => sitemap.write(link))
 sitemap.end()
 
-// Generate sitemap.txt (plain text format, overwrites the stale one from public/)
-const sitemapTxt = links.map(link => `${SITE_URL}${link.url}`).join('\n') + '\n'
-writeFileSync('./dist/sitemap.txt', sitemapTxt)
+streamToPromise(sitemap).then(buffer => {
+  // Pretty-print the XML
+  const xml = buffer.toString()
+    .replace(/(<\/url>)/g, '$1\n')
+    .replace(/(<urlset[^>]*>)/g, '$1\n')
+    .replace(/(<\/urlset>)/g, '\n$1\n')
+    .replace(/(<url>)/g, '  $1')
+  writeFileSync('./dist/sitemap.xml', xml)
 
-streamToPromise(sitemap).then(() => {
+  // Generate sitemap.txt (plain text format)
+  const sitemapTxt = links.map(link => `${SITE_URL}${link.url}`).join('\n') + '\n'
+  writeFileSync('./dist/sitemap.txt', sitemapTxt)
+
   console.log(`✅ sitemap.xml and sitemap.txt generated in dist/ (${links.length} URLs)`)
 })
