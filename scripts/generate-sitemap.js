@@ -1,47 +1,35 @@
+import { createRequire } from 'module'
 import { createWriteStream } from 'fs'
 import { SitemapStream, streamToPromise } from 'sitemap'
 
+const require = createRequire(import.meta.url)
+const config = require('../src/config.json')
+
+const SITE_URL = 'https://mcfunctions.com'
+const convertFormats = ['give-command', 'loot-table', 'item-modifier', 'recipe-output']
+
+const staticPages = ['generators', 'worldgen', 'partners', 'sounds', 'changelog', 'versions', 'guides', 'transformation', 'customized']
+
 const links = [
+  // Homepage
   '/',
-  '/generators/',
-  '/loot-table/',
-  '/predicate/',
-  '/item-modifier/',
-  '/advancement/',
-  '/recipe/',
-  '/text-component/',
-  '/chat-type/',
-  '/dimension/',
-  '/dimension-type/',
-  '/world/',
-  '/worldgen/',
-  '/worldgen/biome/',
-  '/worldgen/carver/',
-  '/worldgen/feature/',
-  '/worldgen/density-function/',
-  '/worldgen/placed-feature/',
-  '/worldgen/noise/',
-  '/worldgen/noise-settings/',
-  '/worldgen/structure-feature/',
-  '/worldgen/structure/',
-  '/worldgen/structure-set/',
-  '/worldgen/surface-builder/',
-  '/worldgen/processor-list/',
-  '/worldgen/template-pool/',
-  '/worldgen/world-preset/',
-  '/worldgen/flat-world-preset/',
-  '/sounds/',
-  '/report/',
-  '/upgrader/',
-  '/changelog/',
-  '/versions/',
+  // Static pages
+  ...staticPages.map(id => `/${id}/`),
+  // Generator pages (from config)
+  ...config.generators.map(m => `/${m.url}/`),
+  // Convert pages
+  ...convertFormats.flatMap(s =>
+    convertFormats.filter(t => s !== t).map(t => `/convert/${s}-to-${t}/`)
+  ),
+  // Legacy guide pages
+  ...config.legacyGuides.map(g => `/guides/${g.id}/`),
 ].map(url => ({
   url,
   changefreq: 'weekly',
-  priority: 0.7
+  priority: 0.7,
 }))
 
-const sitemap = new SitemapStream({ hostname: 'https://mcfunctions.com' })
+const sitemap = new SitemapStream({ hostname: SITE_URL })
 const writeStream = createWriteStream('./dist/sitemap.xml')
 
 sitemap.pipe(writeStream)
@@ -49,5 +37,5 @@ links.forEach(link => sitemap.write(link))
 sitemap.end()
 
 streamToPromise(sitemap).then(() => {
-  console.log('✅ sitemap.xml generated in dist/')
+  console.log(`✅ sitemap.xml generated in dist/ (${links.length} URLs)`)
 })
