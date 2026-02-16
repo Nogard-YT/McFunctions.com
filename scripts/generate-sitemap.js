@@ -1,5 +1,5 @@
 import { createRequire } from 'module'
-import { createWriteStream } from 'fs'
+import { createWriteStream, writeFileSync } from 'fs'
 import { SitemapStream, streamToPromise } from 'sitemap'
 
 const require = createRequire(import.meta.url)
@@ -36,6 +36,10 @@ sitemap.pipe(writeStream)
 links.forEach(link => sitemap.write(link))
 sitemap.end()
 
+// Generate sitemap.txt (plain text format, overwrites the stale one from public/)
+const sitemapTxt = links.map(link => `${SITE_URL}${link.url}`).join('\n') + '\n'
+writeFileSync('./dist/sitemap.txt', sitemapTxt)
+
 streamToPromise(sitemap).then(() => {
-  console.log(`✅ sitemap.xml generated in dist/ (${links.length} URLs)`)
+  console.log(`✅ sitemap.xml and sitemap.txt generated in dist/ (${links.length} URLs)`)
 })
