@@ -40,8 +40,10 @@ streamToPromise(sitemap).then(() => {
     `  <url>\n    <loc>${SITE_URL}${link.url}</loc>\n    <changefreq>${link.changefreq}</changefreq>\n    <priority>${link.priority}</priority>\n  </url>`
   ).join('\n')
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  const xml = `<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urlEntries}
 </urlset>
 `
