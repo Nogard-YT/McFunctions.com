@@ -7,6 +7,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 const config = require('./src/config.json')
 const English = require('./src/locales/en.json')
 
+const SITE_URL = 'https://mcfunctions.com'
 const convertFormats = ['give-command', 'loot-table', 'item-modifier', 'recipe-output']
 
 export default defineConfig({
@@ -34,27 +35,27 @@ export default defineConfig({
 				html({
 					fileName: '404.html',
 					title: '404',
-					template,
+					template: template(null),
 				}),
 				...['generators', 'worldgen', 'partners', 'sounds', 'changelog', 'versions', 'guides', 'transformation', 'customized'].map(id => html({
 					fileName: `${id}/index.html`,
 					title: `${English[`title.${id}`] ?? ''} - ${getVersions()}`,
-					template,
+					template: template(`/${id}/`),
 				})),
 				...config.generators.map(m => html({
 					fileName: `${m.url}/index.html`,
 					title: `${English[m.id] ?? ''} Generator${m.category === true ? 's' : ''} - ${getVersions(m)}`,
-					template,
+					template: template(`/${m.url}/`),
 				})),
 				...convertFormats.flatMap(s => convertFormats.filter(t => s !== t).map(t => [s, t])).map(([s, t]) => html({
 					fileName: `convert/${s}-to-${t}/index.html`,
 					title: `${English[`convert.format.${s}`]} to ${English[`convert.format.${t}`]} Converter - ${getVersions({ minVersion: '1.20.5' })}`,
-					template,
+					template: template(`/convert/${s}-to-${t}/`),
 				})),
 				...config.legacyGuides.map(g => html({
 					fileName: `guides/${g.id}/index.html`,
 					title: `${g.title} - ${getVersions()}`,
-					template,
+					template: template(`/guides/${g.id}/`),
 				})),
 			],
 		},
@@ -64,6 +65,7 @@ export default defineConfig({
 	},
 	define: {
 		__LATEST_VERSION__: env.latest_version,
+		__SITE_URL__: JSON.stringify(SITE_URL),
 	},
 	plugins: [
 		preact(),
@@ -88,7 +90,14 @@ function getVersions(m) {
 	return `Minecraft ${versions.join(', ')}`
 }
 
-function template({ files, title }) {
-	const source = files.html.find(f => f.fileName === 'index.html').source
-	return source.replace(/<title>.*<\/title>/, `<title>${title}</title>`)
+function template(canonicalPath) {
+	return ({ files, title }) => {
+		const source = files.html.find(f => f.fileName === 'index.html').source
+		let result = source.replace(/<title>.*<\/title>/, `<title>${title}</title>`)
+		result = result.replace(/\t<link rel="canonical" href="[^"]*">\r?\n/, '')
+		if (canonicalPath) {
+			result = result.replace('</head>', `\t<link rel="canonical" href="${SITE_URL}${canonicalPath}">\n</head>`)
+		}
+		return result
+	}
 }

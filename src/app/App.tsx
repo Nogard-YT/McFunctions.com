@@ -7,11 +7,25 @@ import { Header } from './components/index.js'
 import { Changelog, Convert, Customized, Generator, Generators, Guide, Guides, Home, LegacyPartners, Partners, Sounds, Transformation, Versions, WhatsNew, Worldgen } from './pages/index.js'
 import { cleanUrl } from './Utils.js'
 
+declare var __SITE_URL__: string
+
+function updateCanonical(path: string) {
+	let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement
+	if (!link) {
+		link = document.createElement('link')
+		link.rel = 'canonical'
+		document.head.appendChild(link)
+	}
+	link.href = `${__SITE_URL__}${path}`
+}
+
 export function App() {
 	const changeRoute = (e: RouterOnChangeArgs) => {
 		window.dispatchEvent(new CustomEvent('replacestate'))
+		const path = cleanUrl(e.url)
+		updateCanonical(path)
 		// Needs a timeout to ensure the title is set correctly
-		setTimeout(() => Analytics.pageview(cleanUrl(e.url)))
+		setTimeout(() => Analytics.pageview(path))
 	}
 
 	return <>
