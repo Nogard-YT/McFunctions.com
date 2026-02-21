@@ -7,7 +7,7 @@ const config = require('../src/config.json')
 const SITE_URL = 'https://mcfunctions.com'
 const convertFormats = ['give-command', 'loot-table', 'item-modifier', 'recipe-output']
 
-const staticPages = ['generators', 'worldgen', 'partners', 'sounds', 'changelog', 'versions', 'guides', 'transformation', 'customized']
+const staticPages = ['generators', 'worldgen', 'partners', 'sounds', 'changelog', 'versions', 'guides', 'transformation', 'customized', 'whats-new', 'convert']
 
 async function generate() {
   // Fetch all Minecraft versions from mcmeta

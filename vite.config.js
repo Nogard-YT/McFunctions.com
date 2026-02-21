@@ -37,6 +37,16 @@ export default defineConfig({
 					title: '404',
 					template: template(null),
 				}),
+				html({
+					fileName: 'whats-new/index.html',
+					title: `${English['title.whats_new']} - ${getVersions()}`,
+					template: template('/whats-new/'),
+				}),
+				html({
+					fileName: 'convert/index.html',
+					title: `${English['title.convert']} - ${getVersions({ minVersion: '1.20.5' })}`,
+					template: template('/convert/'),
+				}),
 				...['generators', 'worldgen', 'partners', 'sounds', 'changelog', 'versions', 'guides', 'transformation', 'customized'].map(id => html({
 					fileName: `${id}/index.html`,
 					title: `${English[`title.${id}`] ?? ''} - ${getVersions()}`,
