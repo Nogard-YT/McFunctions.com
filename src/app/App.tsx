@@ -9,21 +9,24 @@ import { cleanUrl } from './Utils.js'
 
 declare var __SITE_URL__: string
 
-function updateCanonical(path: string) {
+function updateCanonical(url: string) {
+	const searchIndex = url.indexOf('?')
+	const path = cleanUrl(searchIndex >= 0 ? url.slice(0, searchIndex) : url)
+	const search = searchIndex >= 0 ? url.slice(searchIndex) : ''
 	let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement
 	if (!link) {
 		link = document.createElement('link')
 		link.rel = 'canonical'
 		document.head.appendChild(link)
 	}
-	link.href = `${__SITE_URL__}${path}`
+	link.href = `${__SITE_URL__}${path}${search}`
 }
 
 export function App() {
 	const changeRoute = (e: RouterOnChangeArgs) => {
 		window.dispatchEvent(new CustomEvent('replacestate'))
+		updateCanonical(e.url)
 		const path = cleanUrl(e.url)
-		updateCanonical(path)
 		// Needs a timeout to ensure the title is set correctly
 		setTimeout(() => Analytics.pageview(path))
 	}
