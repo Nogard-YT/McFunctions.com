@@ -32,9 +32,35 @@ jobs:
           git checkout master
           set -e
           if git merge upstream/master --no-edit; then
-            echo "✅ Merge successful, pushing changes"
-            git push origin master
+            echo "✅ Merge successful"
           else
-            echo "⚠️ Merge conflict, manual resolution required"
-            exit 1
+            echo "⚠️ Merge conflict detected, attempting auto-resolution..."
+
+            # Auto-resolve conflicts in locale files by taking upstream
+            # version and re-applying the McFunctions.com branding
+            CONFLICTED=$(git diff --name-only --diff-filter=U)
+            RESOLVED_ALL=true
+
+            for file in $CONFLICTED; do
+              if [[ "$file" == src/locales/*.json ]]; then
+                echo "  Resolving $file by taking upstream + branding fix"
+                git show upstream/master:"$file" > "$file"
+                sed -i 's/misode\.github\.io/McFunctions.com/g' "$file"
+                git add "$file"
+              else
+                echo "  ❌ Cannot auto-resolve: $file"
+                RESOLVED_ALL=false
+              fi
+            done
+
+            if [ "$RESOLVED_ALL" = true ]; then
+              git commit --no-edit
+              echo "✅ All conflicts auto-resolved"
+            else
+              echo "❌ Some conflicts require manual resolution"
+              git merge --abort
+              exit 1
+            fi
           fi
+
+          git push origin master
