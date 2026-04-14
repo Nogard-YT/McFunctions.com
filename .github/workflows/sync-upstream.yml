@@ -47,6 +47,10 @@ jobs:
                 git show upstream/master:"$file" > "$file"
                 sed -i 's/misode\.github\.io/McFunctions.com/g' "$file"
                 git add "$file"
+              elif [[ "$file" == "package.json" || "$file" == "package-lock.json" ]]; then
+                echo "  Resolving $file by taking upstream (fork does not customize dependencies)"
+                git checkout --theirs -- "$file"
+                git add "$file"
               else
                 echo "  ❌ Cannot auto-resolve: $file"
                 RESOLVED_ALL=false
