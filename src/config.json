@@ -781,6 +781,12 @@
       "wiki": "https://minecraft.wiki/w/Shader#Post-processing_effects"
     },
     {
+      "id": "sounds",
+      "url": "assets/sounds",
+      "tags": ["assets"],
+      "wiki": "https://minecraft.wiki/w/Sounds.json"
+    },
+    {
       "id": "ad_astra:planets",
       "url": "ad-astra/planets",
       "path": "planets",
