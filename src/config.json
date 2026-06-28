@@ -217,6 +217,13 @@
       "name": "26.2",
       "pack_format": 107,
       "show": true
+    },
+    {
+      "id": "26.3",
+      "dynamic": true,
+      "name": "26.3",
+      "pack_format": 108,
+      "show": true
     }
   ],
   "generators": [
@@ -328,10 +335,20 @@
       "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Pig"
     },
     {
+      "id": "pig_sound_variant",
+      "url": "pig-sound-variant",
+      "minVersion": "26.1"
+    },
+    {
       "id": "cat_variant",
       "url": "cat-variant",
       "minVersion": "1.21.5",
       "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Cat"
+    },
+    {
+      "id": "cat_sound_variant",
+      "url": "cat-sound-variant",
+      "minVersion": "26.1"
     },
     {
       "id": "frog_variant",
@@ -346,10 +363,20 @@
       "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Chicken"
     },
     {
+      "id": "chicken_sound_variant",
+      "url": "chicken-sound-variant",
+      "minVersion": "26.1"
+    },
+    {
       "id": "cow_variant",
       "url": "cow-variant",
       "minVersion": "1.21.5",
       "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Cow"
+    },
+    {
+      "id": "cow_sound_variant",
+      "url": "cow-sound-variant",
+      "minVersion": "26.1"
     },
     {
       "id": "dialog",
@@ -381,6 +408,12 @@
       "minVersion": "1.21.11"
     },
     {
+      "id": "world_clock",
+      "url": "world-clock",
+      "minVersion": "26.1",
+      "wiki": "https://minecraft.wiki/w/World_clock"
+    },
+    {
       "id": "villager_trade",
       "url": "villager-trade",
       "minVersion": "26.1",
@@ -397,6 +430,17 @@
       "url": "sulfur-cube-archetype",
       "minVersion": "26.2",
       "wiki": "https://minecraft.wiki/w/Sulfur_cube_archetype_definition"
+    },
+    {
+      "id": "slot_source",
+      "url": "slot-source",
+      "minVersion": "26.3",
+      "wiki": "https://minecraft.wiki/w/Slot_source"
+    },
+    {
+      "id": "decorated_pot_pattern",
+      "url": "decorated-pot-pattern",
+      "minVersion": "26.3"
     },
     {
       "id": "text_component",
@@ -439,9 +483,17 @@
     },
     {
       "id": "worldgen/configured_feature",
-      "url": "worldgen/feature",
+      "url": "worldgen/configured-feature",
       "tags": ["worldgen"],
       "minVersion": "1.16",
+      "maxVersion": "26.2",
+      "wiki": "https://minecraft.wiki/w/Configured_feature"
+    },
+    {
+      "id": "worldgen/feature",
+      "url": "worldgen/feature",
+      "tags": ["worldgen"],
+      "minVersion": "26.3",
       "wiki": "https://minecraft.wiki/w/Configured_feature"
     },
     {
@@ -457,6 +509,18 @@
       "tags": ["worldgen"],
       "minVersion": "1.18.2",
       "wiki": "https://minecraft.wiki/w/Density_function"
+    },
+    {
+      "id": "worldgen/material_condition",
+      "url": "worldgen/material-condition",
+      "tags": ["worldgen"],
+      "minVersion": "26.3"
+    },
+    {
+      "id": "worldgen/material_rule",
+      "url": "worldgen/material-rule",
+      "tags": ["worldgen"],
+      "minVersion": "26.3"
     },
     {
       "id": "worldgen/noise",
