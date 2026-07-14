@@ -147,9 +147,9 @@ dispatch starexpress:guidebook_entry[conditional_boolean] to struct {
 	/// The variable to check. Returns its value, and errors if the variable is not a boolean.
 	variable: #[id="variable"] string,
 	/// The element to return if the result is true.
-	true?: DescriptionElement,
+	"true"?: DescriptionElement,
 	/// The element to return if the result is false.
-	false?: DescriptionElement,
+	"false"?: DescriptionElement,
 }
 
 dispatch starexpress:guidebook_entry[conditional_string_contains] to struct {
@@ -158,9 +158,9 @@ dispatch starexpress:guidebook_entry[conditional_string_contains] to struct {
 	/// The regex that the variable must contain in order to return true.
 	regex: string,
 	/// The element to return if the result is true.
-	true?: DescriptionElement,
+	"true"?: DescriptionElement,
 	/// The element to return if the result is false.
-	false?: DescriptionElement,
+	"false"?: DescriptionElement,
 }
 
 dispatch starexpress:guidebook_entry[conditional_string_matches] to struct {
@@ -169,7 +169,7 @@ dispatch starexpress:guidebook_entry[conditional_string_matches] to struct {
 	/// The regex that the variable must match in order to return true.
 	regex: string,
 	/// The element to return if the result is true.
-	true?: DescriptionElement,
+	"true"?: DescriptionElement,
 	/// The element to return if the result is false.
-	false?: DescriptionElement,
+	"false"?: DescriptionElement,
 }
