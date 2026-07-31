@@ -315,6 +315,7 @@ export function getCategory(type: McdocType) {
 			case '::java::data::loot::LootFunction':
 			case '::java::data::worldgen::density_function::CubicSpline':
 			case '::java::data::worldgen::processor_list::Processor':
+			case '::java::data::number_provider::NumberProvider':
 				return 'function'
 		}
 	}

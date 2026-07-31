@@ -113,6 +113,7 @@
   "generator.neoforge:data_map_waxables": "Waxables Data Map",
   "generator.neoforge:structure_modifier": "Structure Modifier",
   "generator.not_found": "Cannot find generator \"%0%\"",
+  "generator.number_provider": "Number Provider",
   "generator.ohthetreesyoullgrow:configured_feature": "OTTYG Feature",
   "generator.pack_mcmeta": "Pack.mcmeta",
   "generator.painting_variant": "Painting Variant",

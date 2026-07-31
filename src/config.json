@@ -222,7 +222,7 @@
       "id": "26.3",
       "dynamic": true,
       "name": "26.3",
-      "pack_format": 108,
+      "pack_format": 113,
       "show": true
     }
   ],
@@ -268,12 +268,14 @@
     {
       "id": "trim_material",
       "url": "trim-material",
-      "minVersion": "1.19.4"
+      "minVersion": "1.19.4",
+      "wiki": "https://minecraft.wiki/w/Armor_trim_definition#Trim_material"
     },
     {
       "id": "trim_pattern",
       "url": "trim-pattern",
-      "minVersion": "1.19.4"
+      "minVersion": "1.19.4",
+      "wiki": "https://minecraft.wiki/w/Armor_trim_definition#Trim_pattern"
     },
     {
       "id": "banner_pattern",
@@ -290,7 +292,8 @@
     {
       "id": "wolf_sound_variant",
       "url": "wolf-sound-variant",
-      "minVersion": "1.21.5"
+      "minVersion": "1.21.5",
+      "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Wolf_sounds"
     },
     {
       "id": "enchantment",
@@ -337,7 +340,8 @@
     {
       "id": "pig_sound_variant",
       "url": "pig-sound-variant",
-      "minVersion": "26.1"
+      "minVersion": "26.1",
+      "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Pig_sounds"
     },
     {
       "id": "cat_variant",
@@ -348,7 +352,8 @@
     {
       "id": "cat_sound_variant",
       "url": "cat-sound-variant",
-      "minVersion": "26.1"
+      "minVersion": "26.1",
+      "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Cat_sounds"
     },
     {
       "id": "frog_variant",
@@ -365,7 +370,8 @@
     {
       "id": "chicken_sound_variant",
       "url": "chicken-sound-variant",
-      "minVersion": "26.1"
+      "minVersion": "26.1",
+      "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Chicken_sounds"
     },
     {
       "id": "cow_variant",
@@ -376,7 +382,8 @@
     {
       "id": "cow_sound_variant",
       "url": "cow-sound-variant",
-      "minVersion": "26.1"
+      "minVersion": "26.1",
+      "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Cow_sounds"
     },
     {
       "id": "dialog",
@@ -405,7 +412,8 @@
     {
       "id": "zombie_nautilus_variant",
       "url": "zombie-nautilus-variant",
-      "minVersion": "1.21.11"
+      "minVersion": "1.21.11",
+      "wiki": "https://minecraft.wiki/w/Mob_variant_definitions#Zombie_Nautilus"
     },
     {
       "id": "world_clock",
@@ -440,7 +448,14 @@
     {
       "id": "decorated_pot_pattern",
       "url": "decorated-pot-pattern",
-      "minVersion": "26.3"
+      "minVersion": "26.3",
+      "wiki": "https://minecraft.wiki/w/Decorated_pot_pattern_definition"
+    },
+    {
+      "id": "number_provider",
+      "url": "number-provider",
+      "minVersion": "26.3",
+      "wiki": "https://minecraft.wiki/w/Number_provider"
     },
     {
       "id": "text_component",
