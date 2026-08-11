@@ -1201,6 +1201,15 @@
       "minVersion": "1.21.1"
     },
     {
+      "id": "lychee:recipe",
+      "url": "lychee/recipe",
+      "path": "lychee",
+      "tags": ["partners"],
+      "dependency": "lychee",
+      "wiki": "https://lycheetweaker.readthedocs.io/",
+      "minVersion": "1.20"
+    },
+    {
       "id": "starexpress:guidebook_entry",
       "url": "starexpress/guidebook-entry",
       "path": "guidebook_entries",
